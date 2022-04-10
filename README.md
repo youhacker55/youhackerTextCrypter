@@ -13,4 +13,4 @@ Simple App that encrypt your text  using XOR encryption
 
 # ScreenShots
 
-![](/Screenshot/app-capture.png)
+![](/Screenshot/app-capture.PNG)
