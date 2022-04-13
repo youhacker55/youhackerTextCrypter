@@ -16,6 +16,8 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 String mykey = Key.getText().toString();
                 byte[] data = Txt.getBytes();
                 String base64 = Base64. encodeToString(data, Base64.DEFAULT);
-                text.setText(XOREncryption.encryptDecrypt(base64,mykey.toCharArray()));
+                text.setText(toHex(XOREncryption.encryptDecrypt(base64,mykey.toCharArray())));
 
             }
 
@@ -95,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     text = (TextView) findViewById(R.id.youhacker);
                     String Txt = inputText.getText().toString();
                     String mykey = Key.getText().toString();
-                    byte[] data = Base64.decode(XOREncryption.encryptDecrypt(Txt,mykey.toCharArray()),Base64.DEFAULT);
+                    String t = unHex(Txt);
+                    byte[] data = Base64.decode(XOREncryption.encryptDecrypt(t,mykey.toCharArray()),Base64.DEFAULT);
                     String clear = null;
 
                     clear = new String(data, "UTF-8");
@@ -137,9 +140,22 @@ public class MainActivity extends AppCompatActivity {
         }
         return randomStringBuilder.toString();
     }
+    public String toHex(String arg) {
+        return String.format("%x", new BigInteger(1, arg.getBytes(StandardCharsets.UTF_8)));
 
+    }
+    public static String unHex(String arg) {
 
-
+        String str = "";
+        for(int i=0;i<arg.length();i+=2)
+        {
+            String s = arg.substring(i, (i + 2));
+            int decimal = Integer.parseInt(s, 16);
+            str = str + (char) decimal;
+        }
+        return str;
+    }
+    
 
 
 }
